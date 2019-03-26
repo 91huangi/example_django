@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  example_db:
+    image: mysql
+    command: mysqld
+    environment:
+      MYSQL_ROOT_PASSWORD: "mypassword"
+    ports:
+      - "3306:3306"
+  example_app:
+    image: example_django:django_apache
+    build: .
+    command: apache2ctl -D FOREGROUND
+    volumes:
+      - .:/var/www/html/example_django
+    ports:
+      - "8000:80"
+    depends_on:
+      - example_db
